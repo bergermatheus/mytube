@@ -1,0 +1,9 @@
+# MyTube 0.13.0 validation
+
+Removed the Search results/recommendations heading and Save interest action, including its unused browse-state subscription. Topic management remains in Settings.
+
+The producing layout issue was the fixed 180dp editor/history panel plus heading reserving most of a TV viewport while a three-column card still included its thumbnail, two-line title, metadata and watched-progress label. Focus scrolling could consequently show the preceding row's metadata while clipping the selected card's own metadata. The editor now collapses when a result receives focus, keeping the compact query/microphone header. Up from the first result row restores the embedded keyboard. Saveable editor state retains keyboard mode, and explicit keyboard requests wait for its composition. Row transitions scroll to that row's first item instead of leaving a previous card's footer above the focused thumbnail. Existing search pagination and stable URL keys remain unchanged.
+
+`VerticalBrowseTest` passed on the paired Chromecast in 37.586 seconds. It navigated through result rows 0, 1 and 2 in both directions; checked the focused card's viewport bounds and visible title/publication descendants; verified the removed labels are absent; restored keyboard focus with Up; and entered Library afterward. The actual second-row screenshot was visually inspected and is retained in `artifacts/validation/0.13/search-grid.png` and curated as `docs/images/search.png`.
+
+Local unit tests, debug/release lint and debug/release builds passed (`artifacts/validation/0.13/build.txt`). No database schema, dependency or player code was changed. The optimized 0.13.0/code 13 APK is installed in place with the existing local development key. Package hashes and sizes are recorded in `artifacts/build-info.json` and `SHA256SUMS`. Prior player screenshots remain accurately labeled as 0.10.0; no new playback/performance coverage is claimed.

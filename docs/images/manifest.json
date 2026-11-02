@@ -1,0 +1,59 @@
+{
+  "curated_on": "2026-11-02",
+  "images": [
+    {
+      "file": "home.png",
+      "version": "0.10.0",
+      "captured_on": "Chromecast with Google TV (Android 14)",
+      "sha256": "d308f02ab19f3655208c25c6c3b1c8d023182816fe83b059d85c8e72518e90c7",
+      "notes": "Optimized APK smoke check; Home with mixed video grid."
+    },
+    {
+      "file": "search.png",
+      "version": "0.13.0",
+      "captured_on": "Chromecast with Google TV (Android 14)",
+      "sha256": "39bf7a19e16fe61e89df8652bcef892396aed778dfc6c5699635cd2ea2b83d62",
+      "notes": "VerticalBrowseTest: focused second result row aligned at top; complete title/channel/publication metadata visible, editor collapsed."
+    },
+    {
+      "file": "player-chapters.png",
+      "version": "0.10.0",
+      "captured_on": "Chromecast with Google TV (Android 14)",
+      "sha256": "59ad9d0e081ed1e53412558ec9af45392296458792d6ec653dbff06c34fe0786",
+      "notes": "Fresh 0.10.0 documentation capture of actual decoded Python-course video at 2:16, with chapter timeline and bottom controls.",
+      "build": "debug, instrumentation-only TextureView capture",
+      "video_url": "https://www.youtube.com/watch?v=rfscVS0vtbw",
+      "capture_details": "player-capture.json"
+    },
+    {
+      "file": "settings.png",
+      "version": "0.10.0",
+      "captured_on": "Chromecast with Google TV (Android 14)",
+      "sha256": "9f4fbd5f2fad5ec5a6fff7119c56c0838f5ff790ab2a029019e961a9eefb5c8c",
+      "notes": "Fresh 0.10.0 documentation capture of the quality/subtitle/speed drawer beside actual decoded video.",
+      "build": "debug, instrumentation-only TextureView capture",
+      "video_url": "https://www.youtube.com/watch?v=rfscVS0vtbw",
+      "capture_details": "player-capture.json"
+    },
+    {
+      "file": "comments.png",
+      "version": "0.10.0",
+      "captured_on": "Chromecast with Google TV (Android 14)",
+      "sha256": "0c717644a15e73f45f070967eaf7b67279970dbaa513935c1f082ad7f572f87b",
+      "notes": "Fresh 0.10.0 documentation capture of real public-video comments beside actual decoded video.",
+      "build": "debug, instrumentation-only TextureView capture",
+      "video_url": "https://www.youtube.com/watch?v=rfscVS0vtbw",
+      "capture_details": "player-capture.json"
+    },
+    {
+      "file": "related-videos.png",
+      "version": "0.10.0",
+      "build": "debug, instrumentation-only TextureView capture",
+      "captured_on": "Chromecast with Google TV (Android 14)",
+      "sha256": "0a1a775f9f929a306e7b4dc7e215bfe15206dce41dabca9983dafda31d809f01",
+      "video_url": "https://www.youtube.com/watch?v=rfscVS0vtbw",
+      "notes": "Fresh 0.10.0 documentation capture of the related-video grid below the actual decoded video.",
+      "capture_details": "player-capture.json"
+    }
+  ]
+}

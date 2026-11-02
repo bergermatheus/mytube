@@ -1,0 +1,21 @@
+{
+  "video_url": "https:\/\/www.youtube.com\/watch?v=rfscVS0vtbw",
+  "version": "0.10.0",
+  "observed_at_ms": 1793631601665,
+  "capture_method": "UiAutomation screenshot of real playback; instrumentation-only TextureView replaces uncapturable SurfaceView",
+  "production_code_changed": false,
+  "captures": {
+    "player-chapters.png": {
+      "sampled_video_colors": 269
+    },
+    "settings.png": {
+      "sampled_video_colors": 179
+    },
+    "comments.png": {
+      "sampled_video_colors": 149
+    },
+    "related-videos.png": {
+      "sampled_video_colors": 268
+    }
+  }
+}

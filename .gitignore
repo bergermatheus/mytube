@@ -1,0 +1,55 @@
+# Gradle and Kotlin caches / generated build output
+.gradle/
+.kotlin/
+**/build/
+.cxx/
+.externalNativeBuild/
+captures/
+/app/release/
+
+# Machine-specific Android SDK and IDE configuration
+local.properties
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# Build, runtime, and device-test logs
+*.log
+*.log.*
+
+# Installable packages and generated reports/screenshots
+*.apk
+*.aab
+*.apks
+*.apkm
+*.xapk
+*.idsig
+/artifacts/
+
+# Local signing and environment configuration
+*.jks
+*.keystore
+keystore.properties
+signing.properties
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# Personal preferences and local APK/UI research inputs
+/preferences.json
+/youtube-*/
+/youtube_improve/
+
+# macOS and editor temporary files
+.DS_Store
+._*
+*.swp
+*.swo
+*~
+
+# Generated local investigation/test reports
+/docs/preference-resolution-evidence.xml
+/docs/dependencies.txt
