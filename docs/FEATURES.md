@@ -1,6 +1,6 @@
 # MyTube feature guide
 
-Detailed behavior of MyTube 0.13.0. Start with the [project README](../README.md) for installation and the [development guide](DEVELOPMENT.md) for commands.
+Detailed behavior of MyTube 0.16.0. Start with the [project README](../README.md) for installation and the [development guide](DEVELOPMENT.md) for commands.
 
 ## TV interface
 
@@ -32,11 +32,13 @@ The full-screen video uses Media3 with the default centered controller disabled.
 
 ## Loading and search
 
+Channel previews combine regular uploads and the Live tab, including broadcast replays, and deduplicate by video URL. An initially empty tab can defer its grid to continuation responses; MyTube follows up to three continuations per tab before reporting an unfinished-list error. This is a bounded recent preview, not the complete channel archive. Channel pages include watched videos with saved progress; Home recommendation exclusions do not hide them. Live-only feeds use the same deferred-grid handling and keep only entries identified as actively live. Regional playback restrictions still apply.
+
 Sidebar highlight is updated before destination construction. Visited Home, Search, Subscriptions, Library, Live, Channel, Settings and Interests compositions are retained for the current activity, with separate scroll state. Only the active page is measured/placed; inactive pages are excluded from accessibility and focus entry. Search keeps its query/results/keyboard mode between visits. Retention is bounded to these eight route slots, including one reusable channel slot, and is released with the activity. It is an in-memory cache, not a disk layout cache.
 
 Data loading belongs to a captured page, with an independent job per route. Leaving a page does not cancel its first load or Home pagination; completed data updates that page without switching the visible route. Library refreshes on entry, Live has a one-minute cache, opening a channel fetches that channel, and shared profile/subscription/interest/progress changes reach retained pages. Explicit preference changes invalidate Home/Live data for the next visit. New data can update a retained layout without rebuilding the page shell.
 
-The initial Home/channel spinner is centered in the viewport. Home page preparation, including ranking/mixing, runs on a worker dispatcher. While the next ten videos are pending, loaded cards remain focusable and playable; the status footer is not a focus stop. Down at the last loaded row retains card focus until there are more videos, while Up/Left/Right continue to navigate existing cards.
+The initial Home/channel spinner is centered in the viewport. Home page preparation, including ranking/mixing, runs on a worker dispatcher. While the next ten videos are pending, loaded cards remain focusable and playable; the status footer is not a focus stop. Down on the last loaded row stays inside the grid on Home, channel pages, Library and Live; Left from the first column explicitly returns to the sidebar. Down at the last loaded row retains card focus until there are more videos, while Up/Left/Right continue to navigate existing cards.
 
 Spinners indicate feed/page loading, search suggestions, video extraction/buffering and comment loading. Existing Home items remain usable while later pages load. Search shows text suggestions while typing, debounced by 300 ms. Only one autocomplete request runs at a time; intermediate queries are conflated and stale replies are discarded. Autocomplete uses an independent extractor path so a feed request cannot block it. Select a suggestion or SEARCH to search; results appear below the embedded keyboard, with focus on the first video. Search terms and partial queries are sent to YouTube for these suggestions; no Google sign-in is required.
 

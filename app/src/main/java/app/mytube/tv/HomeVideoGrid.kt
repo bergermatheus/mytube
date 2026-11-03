@@ -28,8 +28,8 @@ import androidx.tv.material3.Text
             val columns = if(tv) 3 else gridState.layoutInfo.visibleItemsInfo.filter { it.column >= 0 }.maxOfOrNull { it.column+1 } ?: 3
             if(event.nativeKeyEvent.action == KeyEvent.ACTION_DOWN && event.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_DPAD_LEFT && index >= 0 && index%columns == 0 && exitLeft != null) {
                 exitLeft();true
-            } else if(home && event.nativeKeyEvent.action == KeyEvent.ACTION_DOWN && event.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
-                if(index >= 0 && index >= videos.size-columns*2 && hasMore && !busy) more()
+            } else if(event.nativeKeyEvent.action == KeyEvent.ACTION_DOWN && event.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
+                if(home && index >= 0 && index >= videos.size-columns*2 && hasMore && !busy) more()
                 // There is nowhere below the last row yet. Retain card focus so Up/Left/Right
                 // continue to navigate loaded videos; the loading footer is never a focus stop.
                 index >= 0 && index/columns == (videos.size-1)/columns

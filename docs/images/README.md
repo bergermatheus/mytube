@@ -33,7 +33,7 @@ adb -s "$MYTUBE_DEVICE" shell am instrument -w \
 mkdir -p artifacts/screenshots
 adb -s "$MYTUBE_DEVICE" pull /sdcard/Android/data/app.mytube.tv/files/docs-refresh artifacts/screenshots/
 # Restore the matching, already built optimized APK for normal use.
-adb -s "$MYTUBE_DEVICE" install -r artifacts/mytube-tv-0.13.0.apk
+adb -s "$MYTUBE_DEVICE" install -r artifacts/mytube-tv-0.16.0.apk
 adb -s "$MYTUBE_DEVICE" shell am start -W -n app.mytube.tv/.MainActivity
 ```
 

@@ -10,8 +10,8 @@ android {
         applicationId = "app.mytube.tv"
         minSdk = 24
         targetSdk = 36
-        versionCode = 13
-        versionName = "0.13.0"
+        versionCode = 16
+        versionName = "0.16.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

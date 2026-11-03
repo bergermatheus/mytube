@@ -294,7 +294,11 @@ class MainActivity : ComponentActivity() {
                     val videos = remember(state.rows) { state.rows.flatMap { it.videos } }
                     if(state.screen == Screen.LIVE && state.busy) Text("Checking live sources ${state.liveChecked}/${state.liveTotal}",color = Muted,fontSize = 12.sp)
                     if(!state.busy && videos.isEmpty() && state.error == null) Box(Modifier.fillMaxSize(),contentAlignment = Alignment.Center) {
-                        Text(if(state.screen == Screen.LIVE) "No live videos found right now." else "No unseen videos yet. Add interests or follow more channels.",color = Muted)
+                        Text(when(state.screen) {
+                            Screen.LIVE -> "No live videos found right now."
+                            Screen.CHANNEL -> "No public videos or broadcasts found for this channel."
+                            else -> "No unseen videos yet. Add interests or follow more channels."
+                        },color = Muted)
                     } else HomeVideoGrid(videos,browseGridState,firstVideo,tv,state.screen == Screen.HOME,state.busy,state.hasMore,state.error,
                         model::moreHome,{ selected = it },::playVideo,::returnToSidebar)
                 } else if(state.screen == Screen.HISTORY) {

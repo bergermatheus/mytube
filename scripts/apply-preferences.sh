@@ -10,7 +10,7 @@ if [ -z "${JAVA_HOME:-}" ] && [ -d /opt/homebrew/opt/openjdk@21/libexec/openjdk.
 fi
 ./scripts/build.sh
 ./gradlew --no-daemon --console=plain assembleDebugAndroidTest
-"$MYTUBE_ADB" install -r artifacts/mytube-tv-0.13.0-debug.apk
+"$MYTUBE_ADB" install -r artifacts/mytube-tv-0.16.0-debug.apk
 "$MYTUBE_ADB" install -r app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
 PREFERENCES_PAYLOAD=$(base64 < "$PREFERENCES_FILE" | tr -d '\n')
 IMPORT_RESULT=$("$MYTUBE_ADB" shell am instrument -w -e class app.mytube.tv.PreferenceImportTest \
@@ -23,4 +23,4 @@ case "$IMPORT_RESULT" in
 esac
 
 # Leave the optimized build installed after the debug instrumentation import.
-"$MYTUBE_ADB" install -r artifacts/mytube-tv-0.13.0.apk
+"$MYTUBE_ADB" install -r artifacts/mytube-tv-0.16.0.apk

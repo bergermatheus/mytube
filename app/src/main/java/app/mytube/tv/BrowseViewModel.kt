@@ -321,15 +321,6 @@ class BrowseViewModel(private val gateway: ExtractorGateway, private val library
     private suspend fun <T> local(block: () -> T): T = withContext(Dispatchers.IO) { block() }
 }
 
-fun readableError(error: Throwable): String {
-    val name = error.javaClass.simpleName
-    return when {
-        name.contains("Captcha", true) || name.contains("Bot", true) -> "YouTube is asking this network to verify requests. Try again later or use another network."
-        error is java.io.IOException -> "Couldn't reach YouTube. Check your internet connection and try again."
-        else -> "YouTube couldn't load this content ($name). Try again; an extractor update may be needed."
-    }
-}
-
 data class SearchSuggestions(val query: String = "", val items: List<String> = emptyList(), val busy: Boolean = false, val error: String? = null)
 
 /** Search owns a separate session so opening/closing it never resets Home's stable page or focus. */

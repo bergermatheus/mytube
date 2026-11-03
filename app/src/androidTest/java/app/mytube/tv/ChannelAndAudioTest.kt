@@ -3,6 +3,7 @@ import android.content.Intent
 import android.view.KeyEvent
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
+import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.test.platform.app.InstrumentationRegistry
 import kotlinx.coroutines.runBlocking
@@ -14,10 +15,13 @@ class ChannelAndAudioTest {
  @Test fun channelIntentKeepsVideoGridWhenEnteringFromSubscriptionsLabel() {
   org.junit.Assume.assumeTrue(InstrumentationRegistry.getArguments().getString("uiTests") == "true")
   val i=InstrumentationRegistry.getInstrumentation();val app=i.targetContext.applicationContext as MyTubeApplication
-  val channel=app.library.subscriptions().first()
+  val args=InstrumentationRegistry.getArguments()
+  val channel=args.getString("channelUrl")?.let { Subscription(it,args.getString("channelName").orEmpty()) }
+   ?: app.library.subscriptions().first()
   val a=i.startActivitySync(Intent(i.targetContext,MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK).putExtra("channel_url",channel.url).putExtra("channel_name",channel.name))
   try {
    compose.waitUntil(90_000) { compose.onAllNodesWithTag("browse-video-0").fetchSemanticsNodes().isNotEmpty() }
+   compose.onNodeWithText("No unseen videos yet. Add interests or follow more channels.").assertDoesNotExist()
    compose.onNodeWithTag("browse-video-0").assertIsFocused()
    i.sendKeyDownUpSync(KeyEvent.KEYCODE_DPAD_LEFT);compose.waitForIdle()
    compose.onNodeWithTag("nav-subscriptions").assertIsFocused()
@@ -27,6 +31,18 @@ class ChannelAndAudioTest {
    compose.onAllNodesWithText(channel.name).onFirst().assertExists()
    i.sendKeyDownUpSync(KeyEvent.KEYCODE_DPAD_DOWN);compose.waitForIdle()
    compose.onNodeWithTag("browse-video-3").assertIsFocused()
+   val count=compose.onNodeWithTag("browse-grid").fetchSemanticsNode().config[SemanticsProperties.StateDescription].substringBefore(" ").toInt()
+   val lastRow=(count-1)/3
+   repeat((lastRow-1).coerceAtLeast(0)) { i.sendKeyDownUpSync(KeyEvent.KEYCODE_DPAD_DOWN);compose.waitForIdle() }
+   val last=compose.onNodeWithTag("browse-video-${lastRow*3}")
+   last.assertIsFocused()
+   repeat(3) { i.sendKeyDownUpSync(KeyEvent.KEYCODE_DPAD_DOWN);compose.waitForIdle();last.assertIsFocused() }
+   if(lastRow>0) {
+    i.sendKeyDownUpSync(KeyEvent.KEYCODE_DPAD_UP);compose.waitForIdle()
+    compose.onNodeWithTag("browse-video-${(lastRow-1)*3}").assertIsFocused()
+   }
+   i.sendKeyDownUpSync(KeyEvent.KEYCODE_DPAD_LEFT);compose.waitForIdle()
+   compose.onNodeWithTag("nav-subscriptions").assertIsFocused()
   } finally { i.runOnMainSync { a.finish() } }
  }
  @Test fun pythonCourseExposesOriginalEnglishAndAlternateAudio() = runBlocking {

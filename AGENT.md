@@ -36,6 +36,7 @@ Read [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the data flow and source m
 | Composition/root navigation | `MainActivity.kt`, `Sidebar.kt`, `BrowseHeader.kt` |
 | Route data, jobs and invalidation | `BrowseViewModel.kt`, `BrowsePages.kt` |
 | Retained page composition/focus | `RetainedPages.kt` |
+| User-facing YouTube failures | `YouTubeErrors.kt` (typed exceptions, never class-name matching) |
 | Extraction, metadata and channel images | `ExtractorGateway.kt`, `OriginalTitles.kt` |
 | Home batches, filtering and channel mix | `HomePager.kt`, `Models.kt`, `HomeVideoGrid.kt` |
 | Embedded keyboard/search/results | `SearchPage.kt` |
@@ -76,5 +77,5 @@ Continue requested reversible work without unnecessary confirmation. Ask for gen
 - [Architecture and cache/data ownership](docs/ARCHITECTURE.md)
 - [Feature and remote-control behavior](docs/FEATURES.md)
 - [Contribution guide](CONTRIBUTING.md)
-- [Latest recorded app validation](docs/VALIDATION-0.13.md) (historical evidence, not a fresh test run)
+- [Latest recorded app validation](docs/VALIDATION-0.16.md) (historical evidence, not a fresh test run)
 - [License](LICENSE) and [third-party notices](THIRD_PARTY_NOTICES.md)

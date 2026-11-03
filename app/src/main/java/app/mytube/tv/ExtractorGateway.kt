@@ -101,15 +101,31 @@ class ExtractorGateway {
     suspend fun channelCandidates(url: String): List<Video> = withContext(Dispatchers.IO) { gate.withLock {
         val channel = ChannelInfo.getInfo(service, url)
         rememberAvatar(url,channel)
-        val tab = channel.tabs.firstOrNull { "videos" in it.contentFilters } ?: channel.tabs.firstOrNull()
-            ?: return@withLock emptyList()
-        videos(ChannelTabInfo.getInfo(service, tab).relatedItems)
+        // Broadcasts and replays live on a separate tab from regular uploads.
+        val tabs = channel.tabs.filter { tab -> tab.contentFilters.any { it == "videos" || it == "livestreams" } }
+        tabs.flatMap { channelTabCandidates(it) }.distinctBy { it.url }
     } }
+    private fun channelTabCandidates(tab: org.schabi.newpipe.extractor.linkhandler.ListLinkHandler): List<Video> {
+        val info = ChannelTabInfo.getInfo(service,tab)
+        val initial = videos(info.relatedItems)
+        if(initial.isNotEmpty() || !Page.isValid(info.nextPage)) return initial
+        // Some channels defer their grid across more than one empty continuation.
+        // Bound preview loading to three continuation requests per tab, keeping
+        // subscription scans finite and reporting unfinished listings as errors.
+        var next = info.nextPage
+        repeat(3) {
+            val page = ChannelTabInfo.getMoreItems(service,tab,next)
+            val resolved = videos(page.items)
+            if(resolved.isNotEmpty() || !Page.isValid(page.nextPage)) return resolved
+            next = page.nextPage
+        }
+        error("YouTube has not returned this channel's video list yet. Please reopen the channel to retry.")
+    }
     suspend fun channelLiveCandidates(url: String): List<Video> = withContext(Dispatchers.IO) {
         val channel = ChannelInfo.getInfo(service,url)
         rememberAvatar(url,channel)
         val tab = channel.tabs.firstOrNull { "livestreams" in it.contentFilters } ?: return@withContext emptyList()
-        videos(ChannelTabInfo.getInfo(service,tab).relatedItems).filter { it.isLive }
+        channelTabCandidates(tab).filter { it.isLive }
     }
     suspend fun liveSearchCandidates(query: String): List<Video> = withContext(Dispatchers.IO) {
         val handler = service.searchQHFactory.fromQuery("$query ao vivo",listOf("videos"),"")

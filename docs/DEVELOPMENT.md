@@ -145,7 +145,7 @@ The `-r` update keeps existing app data when package/signing identity is compati
 adb -s "$MYTUBE_DEVICE" shell dumpsys package app.mytube.tv
 ```
 
-Inspect `versionName`/`versionCode`. The current build configuration is 0.13.0/code 13; `app/build.gradle.kts` is authoritative after a version bump. The [Android CLI run command](https://developer.android.com/tools/agents/android-cli/commands/run) offers an alternative install/launch operation; this app has one default launcher activity:
+Inspect `versionName`/`versionCode`. The current build configuration is 0.16.0/code 16; `app/build.gradle.kts` is authoritative after a version bump. The [Android CLI run command](https://developer.android.com/tools/agents/android-cli/commands/run) offers an alternative install/launch operation; this app has one default launcher activity:
 
 ```sh
 android run --device "$MYTUBE_DEVICE" --apks app/build/outputs/apk/debug/app-debug.apk
@@ -173,10 +173,10 @@ Restarting the host ADB server affects all connected development sessions; use i
 ./scripts/build.sh
 ```
 
-This runs local unit tests, debug/release lint and debug/release assembly. It copies `artifacts/mytube-tv-0.13.0.apk`, `artifacts/mytube-tv-0.13.0-debug.apk` and `artifacts/SHA256SUMS`. The POSIX script expects `shasum`; use the underlying Gradle tasks if your host does not provide that utility. `artifacts/` and build directories are ignored.
+This runs local unit tests, debug/release lint and debug/release assembly. It copies `artifacts/mytube-tv-0.16.0.apk`, `artifacts/mytube-tv-0.16.0-debug.apk` and `artifacts/SHA256SUMS`. The POSIX script expects `shasum`; use the underlying Gradle tasks if your host does not provide that utility. `artifacts/` and build directories are ignored.
 
 ```sh
-adb -s "$MYTUBE_DEVICE" install -r artifacts/mytube-tv-0.13.0.apk
+adb -s "$MYTUBE_DEVICE" install -r artifacts/mytube-tv-0.16.0.apk
 adb -s "$MYTUBE_DEVICE" shell am start -W -n app.mytube.tv/.MainActivity
 ```
 
@@ -239,3 +239,22 @@ android layout --help
 ```
 
 Use a binary-safe shell for PNG redirection. On Windows, Android CLI's `--output` avoids shell text-encoding issues. Raw device captures/logs stay ignored; copy only reviewed public previews into `docs/images/` and update its [provenance notes](images/README.md). Native video surfaces may be absent/black in screenshots even when playback works. Do not fill them with a fabricated scene and present it as a real capture. For player previews, the [opt-in documentation capture helper](images/README.md#how-the-player-frames-were-captured) can render actual video into a capturable test-only surface.
+
+## 7. VPN and regional availability
+
+A VPN on a computer or phone does not change the Chromecast app’s connection. With a VPN installed on the Chromecast, app-specific routing still matters: official YouTube can use the tunnel while MyTube connects directly. In Surfshark’s Android TV settings, include MyTube under Bypasser → Route via VPN (or remove it from Bypass VPN, depending on the selected mode), then reconnect and reopen MyTube. See [Surfshark’s Android TV settings guide](https://support.surfshark.com/hc/en-us/articles/39449086079122-How-to-customize-your-Surfshark-settings-on-Android-TV).
+
+MyTube does not configure the VPN or remove upstream geographic restrictions. Channel listings and playback can differ by the network route. A geographic-restriction error describes the response for MyTube’s request; availability in another app does not prove both apps use the same route.
+
+An opt-in device regression can check a currently active public broadcast through MyTube’s actual route, without subscribing or changing VPN settings:
+
+```sh
+adb -s "$MYTUBE_DEVICE" shell am instrument -w \
+  -e class app.mytube.tv.ChannelLiveDiscoveryTest \
+  -e liveTests true \
+  -e channelUrl "https://www.youtube.com/@CHANNEL_HANDLE" \
+  -e videoUrl "https://www.youtube.com/watch?v=VIDEO_ID" \
+  app.mytube.tv.test/androidx.test.runner.AndroidJUnitRunner
+```
+
+The supplied video must be publicly listed from this connection. By default the test expects it to be actively live; pass `-e expectedLive false` for a confirmed completed broadcast. It checks channel membership, live classification and inclusion/exclusion in the active-live feed. It does not measure decoded playback or configure Surfshark.

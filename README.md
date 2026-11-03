@@ -55,7 +55,7 @@ Saved choices influence the candidate videos and channel mix; this is MyTube's l
 
 This is a native Android app: run it on an **Android TV emulator or a Google TV/Android TV device**, not a localhost web server. Older cast-only Chromecast models without installable Android apps cannot run this APK.
 
-Requirements: JDK 17+ (21 used for development), Android SDK platform 36, build-tools 36.0.0 and platform-tools/ADB. The repository includes the Gradle wrapper; no global Gradle, Node.js or Google API key is needed. Android minimum API is 24. The current app version is **0.13.0**.
+Requirements: JDK 17+ (21 used for development), Android SDK platform 36, build-tools 36.0.0 and platform-tools/ADB. The repository includes the Gradle wrapper; no global Gradle, Node.js or Google API key is needed. Android minimum API is 24. The current app version is **0.16.0**.
 
 First follow [Java, Android CLI and SDK setup](docs/DEVELOPMENT.md#1-install-java-and-the-android-tools). Then, from the checkout root:
 
@@ -102,7 +102,7 @@ For an optimized local build:
 
 ```sh
 ./scripts/build.sh
-adb -s "$MYTUBE_DEVICE" install -r artifacts/mytube-tv-0.13.0.apk
+adb -s "$MYTUBE_DEVICE" install -r artifacts/mytube-tv-0.16.0.apk
 adb -s "$MYTUBE_DEVICE" shell am start -W -n app.mytube.tv/.MainActivity
 ```
 
@@ -137,7 +137,7 @@ Start with [AGENT.md](AGENT.md) for project context, source ownership and the de
 ./scripts/build.sh
 ```
 
-Real UI/playback checks are opt-in and interact with the selected TV. Follow [device-test instructions](docs/DEVELOPMENT.md#5-verify-changes) to install test APKs in place and preserve the existing library. [Version 0.13 validation](docs/VALIDATION-0.13.md) records prior executed checks and their limits; it is not a guarantee for every device/video.
+Real UI/playback checks are opt-in and interact with the selected TV. Follow [device-test instructions](docs/DEVELOPMENT.md#5-verify-changes) to install test APKs in place and preserve the existing library. [Version 0.16 validation](docs/VALIDATION-0.16.md) records prior executed checks and their limits; it is not a guarantee for every device/video.
 
 There is no Google account sync, casting receiver, download UI, SponsorBlock integration, dedicated Shorts page, chapter picker or seek-thumbnail preview yet. Comments are read-only. DRM/account-restricted content is unsupported. Google TV is the primary target; phone/touch behavior has not received equivalent testing.
 
